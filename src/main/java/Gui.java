@@ -103,7 +103,6 @@ public class Gui {
         naiveBayesRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 algorithmSelector = "naiveBayes";
             }
         });
@@ -111,7 +110,6 @@ public class Gui {
         j48RadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 algorithmSelector = "j48";
             }
         });
@@ -119,7 +117,6 @@ public class Gui {
         SMORadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 algorithmSelector = "smo";
             }
         });
@@ -127,7 +124,6 @@ public class Gui {
         randomForestRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 algorithmSelector = "randomForest";
             }
         });
@@ -135,7 +131,6 @@ public class Gui {
         IBKRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 algorithmSelector = "ibk";
             }
         });
@@ -172,7 +167,7 @@ public class Gui {
         frame.setContentPane(new Gui().getMainPanel());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(1600, 900);
+        frame.setSize(1200, 675);
         frame.setVisible(true);
 
     }
