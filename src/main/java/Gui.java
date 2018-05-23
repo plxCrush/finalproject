@@ -9,6 +9,7 @@ public class Gui {
 
     public Gui() {
 
+        // BUTTON ACTION LISTENERS
 
         browseInputFileButton.addActionListener(new ActionListener() {
             @Override
@@ -16,16 +17,85 @@ public class Gui {
                 System.out.println("BROWSE INPUT");
             }
         });
-    }
 
-    public static void main(String[] args) {
+        browseOutputFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("BROWSE OUTPUT");
+            }
+        });
 
-        JFrame frame = new JFrame("Sentiment Analysis & Artificial Data");
-        frame.setContentPane(new Gui().getMainPanel());
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setSize(1600, 900);
-        frame.setVisible(true);
+        createBagButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("CREATE BAG");
+            }
+        });
+
+        createAndAddArtificialButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("CREATE AND ADD ARTIFICIAL DATA");
+            }
+        });
+
+        runButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("RUN BUTTON");
+            }
+        });
+
+        singleTweetSendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("SINGLE TWEET SEND BUTTON");
+            }
+        });
+
+        //ALOGRITHM SELECT RADIO BUTTON ACTION LISTENERS
+
+        final ButtonGroup group = new ButtonGroup();
+        group.add(naiveBayesRadioButton);
+        group.add(j48RadioButton);
+        group.add(SMORadioButton);
+        group.add(randomForestRadioButton);
+        group.add(IBKRadioButton);
+
+        naiveBayesRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("naive");
+            }
+        });
+
+        j48RadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("j48");
+            }
+        });
+
+        SMORadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("SMO");
+            }
+        });
+
+        randomForestRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Random Forest");
+            }
+        });
+
+        IBKRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("IBK");
+            }
+        });
 
     }
 
@@ -39,7 +109,7 @@ public class Gui {
     private JPanel ConsolePanel;
     private JTextArea Console;
     private JTextArea SingleTweetInput;
-    private JButton SingleTweetSendButton;
+    private JButton singleTweetSendButton;
     private JPanel FileSelectorPanel;
     private JButton browseInputFileButton;
     private JButton browseOutputFileButton;
@@ -52,5 +122,16 @@ public class Gui {
     private JPanel SettingsPanel;
     private JTextField minWordOccurance;
     private JTextField minTfIdf;
+
+    public static void main(String[] args) {
+
+        JFrame frame = new JFrame("Sentiment Analysis & Artificial Data");
+        frame.setContentPane(new Gui().getMainPanel());
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setSize(1600, 900);
+        frame.setVisible(true);
+
+    }
 
 }
