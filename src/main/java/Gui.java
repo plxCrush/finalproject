@@ -1,27 +1,65 @@
 import lombok.Data;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 @Data
 public class Gui {
 
+    public String inputFilePath = "";
+    public String targetFilePath = "";
+
+    public String outputFolder = "output";
+
+    public int minBagWordOccur = 5; // default 5
+    public int minBagTfIDf = 0; // 0 means disabled by default
+
+    public String algorithmSelector;
+
+    // TODO: Make textFields FIXED !
+
     public Gui() {
+
+        // SETTING DEFAULT VALUES
+
+        minWordOccur.setText("5");
+        minTfIdf.setText("0");
+
+        randomForestRadioButton.setSelected(true);
+        algorithmSelector = "randomForest";
 
         // BUTTON ACTION LISTENERS
 
         browseInputFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("BROWSE INPUT");
+
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                int returnValue = jfc.showOpenDialog(null);
+
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jfc.getSelectedFile();
+                    inputFilePath = selectedFile.getAbsolutePath();
+                    getInputFileLabel().setText(selectedFile.getName());
+                }
             }
         });
 
-        browseOutputFileButton.addActionListener(new ActionListener() {
+        browseTargetFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("BROWSE OUTPUT");
+
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                int returnValue = jfc.showOpenDialog(null);
+
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jfc.getSelectedFile();
+                    targetFilePath = selectedFile.getAbsolutePath();
+                    getOutputFileLabel().setText(selectedFile.getName());
+                }
             }
         });
 
@@ -53,7 +91,7 @@ public class Gui {
             }
         });
 
-        //ALOGRITHM SELECT RADIO BUTTON ACTION LISTENERS
+        // ALGORITHM SELECT RADIO BUTTON ACTION LISTENERS
 
         final ButtonGroup group = new ButtonGroup();
         group.add(naiveBayesRadioButton);
@@ -65,35 +103,40 @@ public class Gui {
         naiveBayesRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("naive");
+
+                algorithmSelector = "naiveBayes";
             }
         });
 
         j48RadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("j48");
+
+                algorithmSelector = "j48";
             }
         });
 
         SMORadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("SMO");
+
+                algorithmSelector = "smo";
             }
         });
 
         randomForestRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Random Forest");
+
+                algorithmSelector = "randomForest";
             }
         });
 
         IBKRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("IBK");
+
+                algorithmSelector = "ibk";
             }
         });
 
@@ -112,7 +155,7 @@ public class Gui {
     private JButton singleTweetSendButton;
     private JPanel FileSelectorPanel;
     private JButton browseInputFileButton;
-    private JButton browseOutputFileButton;
+    private JButton browseTargetFileButton;
     private JLabel InputFileLabel;
     private JLabel OutputFileLabel;
     private JPanel ActionsPanel;
@@ -120,7 +163,7 @@ public class Gui {
     private JButton runButton;
     private JButton createAndAddArtificialButton;
     private JPanel SettingsPanel;
-    private JTextField minWordOccurance;
+    private JTextField minWordOccur;
     private JTextField minTfIdf;
 
     public static void main(String[] args) {

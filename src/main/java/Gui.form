@@ -61,6 +61,7 @@
               <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font size="16" style="1"/>
               <text value="Classify Algorithm For Sentiment Analysis"/>
             </properties>
           </component>
@@ -76,7 +77,7 @@
         <children>
           <component id="a176a" class="javax.swing.JTextArea" binding="Console">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>
               </grid>
             </constraints>
@@ -86,7 +87,7 @@
           </component>
           <component id="dd7ba" class="javax.swing.JTextArea" binding="SingleTweetInput">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>
               </grid>
             </constraints>
@@ -131,6 +132,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font style="1"/>
               <text value="Input File:"/>
             </properties>
           </component>
@@ -155,7 +157,8 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Output File (Optional):"/>
+              <font style="1"/>
+              <text value="Target File (Optional):"/>
             </properties>
           </component>
           <component id="1081c" class="javax.swing.JLabel" binding="OutputFileLabel">
@@ -166,7 +169,7 @@
               <text value="No Files Selected..."/>
             </properties>
           </component>
-          <component id="c7804" class="javax.swing.JButton" binding="browseOutputFileButton">
+          <component id="c7804" class="javax.swing.JButton" binding="browseTargetFileButton">
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -213,6 +216,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font size="16" style="1"/>
               <text value="Actions"/>
             </properties>
           </component>
@@ -231,10 +235,11 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <font style="1"/>
               <text value="Eliminate words with occurance lower than: "/>
             </properties>
           </component>
-          <component id="84dab" class="javax.swing.JTextField" binding="minWordOccurance">
+          <component id="84dab" class="javax.swing.JTextField" binding="minWordOccur">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -247,7 +252,8 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="TF-IDF:"/>
+              <font style="1"/>
+              <text value="TF-IDF (0 means disabled):"/>
             </properties>
           </component>
           <component id="ef372" class="javax.swing.JTextField" binding="minTfIdf">
