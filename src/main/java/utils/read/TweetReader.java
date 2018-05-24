@@ -1,5 +1,6 @@
 package utils.read;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import model.Tweet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -17,19 +18,12 @@ import java.util.Iterator;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class TweetReader {
 
+    String filePath;
     int startPoint;
     int amount;
-    String filePath;
-
-    public TweetReader(String filePath, int startPoint, int amount) {
-
-        this.filePath = filePath;
-        this.startPoint = startPoint;
-        this.amount = amount;
-
-    }
 
     public List<Tweet> read() throws IOException {
 
