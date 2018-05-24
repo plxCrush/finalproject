@@ -2,11 +2,13 @@ package utils.read;
 
 import com.graphbuilder.struc.Bag;
 import model.Tweet;
+import weka.core.Instances;
+import weka.core.converters.ConverterUtils.DataSource;
 
 import java.io.*;
 import java.util.List;
 
-public class ArffWriter {
+public class ArffUtils {
 
     public void write(Bag bag, List<Tweet> tweets, String filePath, boolean writeTags) throws IOException {
 
@@ -39,6 +41,16 @@ public class ArffWriter {
         writer.flush();
         writer.close();
 
+    }
+
+    public Instances getInstances(String filePath) throws Exception {
+
+        DataSource source = new DataSource(filePath);
+        Instances instances = source.getDataSet();
+        if (instances.classIndex() == -1)
+            instances.setClassIndex(instances.numAttributes() - 1);
+
+        return instances;
     }
 
 }

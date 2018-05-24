@@ -2,9 +2,11 @@ import com.graphbuilder.struc.Bag;
 import lombok.Data;
 import model.Tweet;
 import utils.bag.BagUtils;
-import utils.read.ArffWriter;
+import utils.read.ArffUtils;
 import utils.read.TweetGroupInfo;
 import utils.read.TweetReader;
+import utils.sentimentAnalysis.SentimentAnalyzer;
+import weka.core.Instances;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -176,19 +178,41 @@ public class Gui {
             public void actionPerformed(ActionEvent e) {
 
                 consoleField.append("\nWriting Arff files to output path...");
-                ArffWriter writer = new ArffWriter();
+                ArffUtils arffUtils = new ArffUtils();
                 try {
-                    writer.write(bag, trainTweets, trainFileName, true);
+                    arffUtils.write(bag, trainTweets, trainFileName, true);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
                 try {
-                    writer.write(bag, testTweets, testFileName, true);
+                    arffUtils.write(bag, testTweets, testFileName, true);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
 
+                Instances trainInstances = null;
+                Instances testInstances = null;
+
+                try {
+                    trainInstances = arffUtils.getInstances(trainFileName);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    testInstances = arffUtils.getInstances(testFileName);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+
                 consoleField.append("\nArff files are ready...");
+
+                consoleField.append("\nSentiment Analysis running...");
+                SentimentAnalyzer analyzer = new SentimentAnalyzer(algorithmSelector);
+                try {
+                    analyzer.anaylze(trainInstances, testInstances, true);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 

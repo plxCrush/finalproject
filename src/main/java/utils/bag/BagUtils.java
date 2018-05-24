@@ -78,7 +78,6 @@ public class BagUtils {
                     if (!wc.checkWord(word)) {
                         List <String> tmp = wc.suggestWords(word);
                         if(tmp.size() > 0) {
-                            System.out.println("CHANGED : "+word+" --> "+ tmp.get(0));
                             String newWord = tmp.get(0);
                             t.changeWord(word, newWord);
                         }
