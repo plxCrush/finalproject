@@ -1,5 +1,7 @@
+import com.graphbuilder.struc.Bag;
 import lombok.Data;
 import model.Tweet;
+import utils.bag.BagUtils;
 import utils.read.TweetGroupInfo;
 import utils.read.TweetReader;
 
@@ -21,9 +23,6 @@ public class Gui {
 
     public String outputFolder = "output";
 
-    public int minWordOccur = 5; // default 5
-    public int minTfIDf = 0; // 0 means disabled by default
-
     public int readTweetsStartPoint = 1;
     public int readTweetsAmount = 1000;
 
@@ -31,6 +30,8 @@ public class Gui {
 
     public List<Tweet> trainTweets;
     public List<Tweet> testTweets;
+
+    public Bag bag;
 
     // TODO: Make textFields FIXED !
 
@@ -40,11 +41,13 @@ public class Gui {
 
         minWordOccurField.setText("5");
         minTfIdfField.setText("0");
+        maxTfIdfField.setText("0");
 
         readTweetsStartPointField.setText("1");
         readTweetsAmountField.setText("1000");
 
         randomForestRadioButton.setSelected(true);
+        useWordSuggestionRadioButton.setSelected(true);
         algorithmSelector = "randomForest";
 
         splitTweetsRadioButton.setSelected(true);
@@ -113,16 +116,19 @@ public class Gui {
                     testTweets = null;
                 }
 
+                allTweets.clear();
+
                 TweetGroupInfo info = new TweetGroupInfo();
 
                 consoleField.append(String.format("\n%s train tweets", trainTweets.size()));
                 consoleField.append(info.sentimentDistrubiton(trainTweets));
 
                 if(testTweets != null) {
-
                     consoleField.append(String.format("\n%s test tweets", testTweets.size()));
                     consoleField.append(info.sentimentDistrubiton(testTweets));
                 }
+
+                consoleField.append("\n");
 
             }
         });
@@ -130,7 +136,23 @@ public class Gui {
         createBagButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("CREATE BAG");
+
+                BagUtils bagUtils = new BagUtils(Integer.parseInt(minWordOccurField.getText()),
+                        Integer.parseInt(minTfIdfField.getText()),
+                        Integer.parseInt(maxTfIdfField.getText()),
+                        useWordSuggestionRadioButton.isSelected());
+
+                consoleField.append("\nFiltering tweet words by your settings...");
+                bagUtils.reduceTweetWords(trainTweets, testTweets);
+                consoleField.append("\nCreating bag...");
+                bag = bagUtils.create(trainTweets, testTweets);
+                consoleField.append(String.format("\nBag is created with size of %s\n",bag.size()));
+
+                for (Tweet t: trainTweets) {
+
+                    t.print();
+                }
+
             }
         });
 
@@ -228,6 +250,8 @@ public class Gui {
     private JTextField readTweetsStartPointField;
     private JTextField readTweetsAmountField;
     private JRadioButton splitTweetsRadioButton;
+    private JTextField maxTfIdfField;
+    private JRadioButton useWordSuggestionRadioButton;
 
     public static void main(String[] args) {
 
