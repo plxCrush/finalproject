@@ -1,5 +1,6 @@
 import lombok.Data;
 import model.Tweet;
+import utils.read.TweetGroupInfo;
 import utils.read.TweetReader;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @Data
 public class Gui {
 
-    public String inputFilePath = "";
+    public String inputFilePath = "data/3969tweets.xls";
     public String targetFilePath = "";
 
     public String outputFolder = "output";
@@ -112,10 +113,16 @@ public class Gui {
                     testTweets = null;
                 }
 
-                consoleField.append(String.format("\n%s train tweets", trainTweets.size()));
+                TweetGroupInfo info = new TweetGroupInfo();
 
-                if(testTweets != null)
+                consoleField.append(String.format("\n%s train tweets", trainTweets.size()));
+                consoleField.append(info.sentimentDistrubiton(trainTweets));
+
+                if(testTweets != null) {
+
                     consoleField.append(String.format("\n%s test tweets", testTweets.size()));
+                    consoleField.append(info.sentimentDistrubiton(testTweets));
+                }
 
             }
         });
