@@ -235,7 +235,7 @@ public class Gui {
         frame.setContentPane(new Gui().getMainPanel());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(1200, 675);
+        frame.setSize(1200, 800);
         frame.setVisible(true);
 
     }
