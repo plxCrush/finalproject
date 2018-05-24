@@ -1,10 +1,15 @@
 import lombok.Data;
+import model.Tweet;
+import utils.read.TweetReader;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class Gui {
@@ -14,8 +19,11 @@ public class Gui {
 
     public String outputFolder = "output";
 
-    public int minBagWordOccur = 5; // default 5
-    public int minBagTfIDf = 0; // 0 means disabled by default
+    public int minWordOccur = 5; // default 5
+    public int minTfIDf = 0; // 0 means disabled by default
+
+    public int readTweetsStartPoint = 1;
+    public int readTweetsAmount = 1000;
 
     public String algorithmSelector;
 
@@ -25,8 +33,11 @@ public class Gui {
 
         // SETTING DEFAULT VALUES
 
-        minWordOccur.setText("5");
-        minTfIdf.setText("0");
+        minWordOccurField.setText("5");
+        minTfIdfField.setText("0");
+
+        readTweetsStartPointField.setText("1");
+        readTweetsAmountField.setText("1000");
 
         randomForestRadioButton.setSelected(true);
         algorithmSelector = "randomForest";
@@ -60,6 +71,28 @@ public class Gui {
                     targetFilePath = selectedFile.getAbsolutePath();
                     getOutputFileLabel().setText(selectedFile.getName());
                 }
+            }
+        });
+
+        readTweetsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                TweetReader tweetReader = new TweetReader(inputFilePath,
+                        Integer.parseInt(readTweetsStartPointField.getText()),
+                        Integer.parseInt(readTweetsAmountField.getText()));
+
+                List<Tweet> allTweets = new ArrayList<>();
+
+                try {
+                    allTweets = tweetReader.read();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+                for (Tweet tweet: allTweets)
+                    tweet.print();
+
             }
         });
 
@@ -158,8 +191,11 @@ public class Gui {
     private JButton runButton;
     private JButton createAndAddArtificialButton;
     private JPanel SettingsPanel;
-    private JTextField minWordOccur;
-    private JTextField minTfIdf;
+    private JTextField minWordOccurField;
+    private JTextField minTfIdfField;
+    private JButton readTweetsButton;
+    private JTextField readTweetsStartPointField;
+    private JTextField readTweetsAmountField;
 
     public static void main(String[] args) {
 
