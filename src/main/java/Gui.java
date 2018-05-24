@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -27,6 +28,9 @@ public class Gui {
 
     public String algorithmSelector;
 
+    public List<Tweet> trainTweets;
+    public List<Tweet> testTweets;
+
     // TODO: Make textFields FIXED !
 
     public Gui() {
@@ -41,6 +45,8 @@ public class Gui {
 
         randomForestRadioButton.setSelected(true);
         algorithmSelector = "randomForest";
+
+        splitTweetsRadioButton.setSelected(true);
 
         // BUTTON ACTION LISTENERS
 
@@ -78,6 +84,8 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                consoleField.setText("Reading tweets from input file...");
+
                 TweetReader tweetReader = new TweetReader(inputFilePath,
                         Integer.parseInt(readTweetsStartPointField.getText()),
                         Integer.parseInt(readTweetsAmountField.getText()));
@@ -86,12 +94,28 @@ public class Gui {
 
                 try {
                     allTweets = tweetReader.read();
+                    consoleField.setText(String.format("Read %s tweets", allTweets.size()));
+
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
 
-                for (Tweet tweet: allTweets)
-                    tweet.print();
+                if (splitTweetsRadioButton.isSelected()) {
+
+                    Tweet[][] splitted = tweetReader.split(allTweets);
+                    trainTweets = Arrays.asList(splitted[0]);
+                    testTweets = Arrays.asList(splitted[1]);
+                }
+                else {
+
+                    trainTweets = allTweets;
+                    testTweets = null;
+                }
+
+                consoleField.append(String.format("\n%s train tweets", trainTweets.size()));
+
+                if(testTweets != null)
+                    consoleField.append(String.format("\n%s test tweets", testTweets.size()));
 
             }
         });
@@ -178,8 +202,8 @@ public class Gui {
     private JRadioButton SMORadioButton;
     private JPanel AlgorithmPanel;
     private JPanel ConsolePanel;
-    private JTextArea Console;
-    private JTextArea SingleTweetInput;
+    private JTextArea consoleField;
+    private JTextArea SingleTweetInputField;
     private JButton singleTweetSendButton;
     private JPanel FileSelectorPanel;
     private JButton browseInputFileButton;
@@ -196,6 +220,7 @@ public class Gui {
     private JButton readTweetsButton;
     private JTextField readTweetsStartPointField;
     private JTextField readTweetsAmountField;
+    private JRadioButton splitTweetsRadioButton;
 
     public static void main(String[] args) {
 

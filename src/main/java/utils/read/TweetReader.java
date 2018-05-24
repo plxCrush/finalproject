@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -76,6 +77,28 @@ public class TweetReader {
         inputStream.close();
 
         return tweets;
+    }
+
+    public Tweet[][] split(List<Tweet> allTweets) {
+
+        int half = allTweets.size()/2;
+        Collections.shuffle(allTweets);
+        Tweet[] all = new Tweet[allTweets.size()];
+        Tweet[] trainTweets = new Tweet[half];
+        Tweet[] testTweets = new Tweet[half];
+
+        allTweets.toArray(all);
+
+        for (int i=0; i < half; i++)
+            trainTweets[i] = all[i];
+        for(int i=half; i < all.length; i++)
+            testTweets[i-half] = all[i];
+
+        Tweet[][] res = new Tweet[2][];
+        res[0] = trainTweets;
+        res[1] = testTweets;
+        return res;
+
     }
 
 }
