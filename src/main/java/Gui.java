@@ -2,6 +2,7 @@ import com.graphbuilder.struc.Bag;
 import lombok.Data;
 import model.Tweet;
 import utils.bag.BagUtils;
+import utils.read.ArffWriter;
 import utils.read.TweetGroupInfo;
 import utils.read.TweetReader;
 
@@ -21,7 +22,10 @@ public class Gui {
     public String inputFilePath = "data/3969tweets.xls";
     public String targetFilePath = "";
 
-    public String outputFolder = "output";
+    public static final String OUTPUT_FOLDER = "output/";
+    public static final String DATA_FOLDER = "data/";
+    public static final String trainFileName = OUTPUT_FOLDER+"train.arff";
+    public static final String testFileName = OUTPUT_FOLDER+"test.arff";
 
     public int readTweetsStartPoint = 1;
     public int readTweetsAmount = 1000;
@@ -148,10 +152,14 @@ public class Gui {
                 bag = bagUtils.create(trainTweets, testTweets);
                 consoleField.append(String.format("\nBag is created with size of %s\n",bag.size()));
 
+                consoleField.append("\nGenerating bag of words for each tweet...");
                 for (Tweet t: trainTweets) {
-
-                    t.print();
+                    t.generateBow(bag);
                 }
+                for (Tweet t: testTweets) {
+                    t.generateBow(bag);
+                }
+                consoleField.append("\nBag of words generated...\n");
 
             }
         });
@@ -166,7 +174,21 @@ public class Gui {
         runButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("RUN BUTTON");
+
+                consoleField.append("\nWriting Arff files to output path...");
+                ArffWriter writer = new ArffWriter();
+                try {
+                    writer.write(bag, trainTweets, trainFileName, true);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    writer.write(bag, testTweets, testFileName, true);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                consoleField.append("\nArff files are ready...");
             }
         });
 

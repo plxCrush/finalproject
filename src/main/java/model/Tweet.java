@@ -1,5 +1,6 @@
 package model;
 
+import com.graphbuilder.struc.Bag;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ public class Tweet {
     private String tag;
     private String content;
     private ArrayList<String> words;
+    public byte[] bow;
 
     public Tweet (String tag, String content) {
 
@@ -54,6 +56,16 @@ public class Tweet {
     public void changeWord(String word, String newWord) {
 
         this.getWords().set(getWords().indexOf(word), newWord);
+    }
+
+    public void generateBow(Bag bag)
+    {
+        this.bow = new byte[bag.size()];
+
+        for (String word : words) {
+            if (bag.contains(word))
+                this.bow[bag.indexOf(word)]++;
+        }
     }
 
     public void print() {
