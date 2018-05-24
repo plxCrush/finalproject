@@ -51,6 +51,11 @@ public class Tweet {
         return word.contains("/") || word.contains("\\") || word.contains("@") || word.equals("");
     }
 
+    public void changeWord(String word, String newWord) {
+
+        this.getWords().set(getWords().indexOf(word), newWord);
+    }
+
     public void print() {
 
         StringBuilder words = new StringBuilder();
