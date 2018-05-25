@@ -39,8 +39,6 @@ public class Gui {
 
     public Bag bag;
 
-    // TODO: Make textFields FIXED !
-
     public Gui() {
 
         // SETTING DEFAULT VALUES
@@ -209,17 +207,11 @@ public class Gui {
                 consoleField.append("\nSentiment Analysis running...");
                 SentimentAnalyzer analyzer = new SentimentAnalyzer(algorithmSelector);
                 try {
-                    analyzer.anaylze(trainInstances, testInstances, true);
+                    String info = analyzer.anaylze(trainInstances, testInstances, true);
+                    consoleField.append(String.format("\n%s\n",info));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-            }
-        });
-
-        singleTweetSendButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("SINGLE TWEET SEND BUTTON");
             }
         });
 
