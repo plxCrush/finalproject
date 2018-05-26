@@ -195,17 +195,9 @@
               <text value="Actions"/>
             </properties>
           </component>
-          <component id="96548" class="javax.swing.JButton" binding="createBagButton" default-binding="true">
-            <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Create Bag"/>
-            </properties>
-          </component>
           <component id="828c5" class="javax.swing.JButton" binding="createAndAddArtificialButton" default-binding="true">
             <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Create and Add Artificial Data"/>
@@ -233,6 +225,14 @@
             </constraints>
             <properties>
               <text value="Open Output Folder"/>
+            </properties>
+          </component>
+          <component id="56717" class="javax.swing.JButton" binding="createBagButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Create Bag"/>
             </properties>
           </component>
         </children>
