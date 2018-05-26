@@ -11,6 +11,7 @@ import weka.core.Instances;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -293,6 +294,16 @@ public class Gui {
             }
         });
 
+        openOutputFolderButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Desktop.getDesktop().open(new File(OUTPUT_FOLDER));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 
     private JPanel MainPanel;
@@ -324,6 +335,7 @@ public class Gui {
     private JRadioButton splitTweetsRadioButton;
     private JTextField maxTfIdfField;
     private JRadioButton useWordSuggestionRadioButton;
+    private JButton openOutputFolderButton;
 
     public static void main(String[] args) {
 
