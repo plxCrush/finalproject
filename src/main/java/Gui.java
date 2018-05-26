@@ -6,6 +6,7 @@ import utils.read.ArffUtils;
 import utils.read.TweetGroupInfo;
 import utils.read.TweetReader;
 import utils.sentimentAnalysis.SentimentAnalyzer;
+import utils.wordSuggestion.WordCorrector;
 import weka.core.Instances;
 
 import javax.swing.*;
@@ -140,6 +141,17 @@ public class Gui {
                     }
                 }
 
+                if (useWordSuggestionRadioButton.isSelected()) {
+
+                    try {
+                        WordCorrector wordCorrector = new WordCorrector();
+                        wordCorrector.correctWords(trainTweets);
+                        wordCorrector.correctWords(testTweets);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
                 TweetGroupInfo info = new TweetGroupInfo();
 
                 consoleField.append(String.format("\n%s train tweets", trainTweets.size()));
@@ -161,8 +173,7 @@ public class Gui {
 
                 BagUtils bagUtils = new BagUtils(Integer.parseInt(minWordOccurField.getText()),
                         Integer.parseInt(minTfIdfField.getText()),
-                        Integer.parseInt(maxTfIdfField.getText()),
-                        useWordSuggestionRadioButton.isSelected());
+                        Integer.parseInt(maxTfIdfField.getText()));
 
                 consoleField.append("\nFiltering tweet words by your settings...");
                 bagUtils.reduceTweetWords(trainTweets, testTweets);

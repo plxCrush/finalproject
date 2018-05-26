@@ -1,5 +1,6 @@
 package utils.wordSuggestion;
 
+import model.Tweet;
 import zemberek.morphology.TurkishMorphology;
 import zemberek.normalization.TurkishSpellChecker;
 
@@ -43,6 +44,27 @@ public class WordCorrector {
 
     public boolean checkWord(String x) {
         return spellChecker.check(x);
+    }
+
+    public void correctWords(List<Tweet> tweets) {
+
+        try {
+            WordCorrector wc = new WordCorrector();
+            for (Tweet t : tweets) {
+                for (String word : t.getWords()) {
+                    if (!wc.checkWord(word)) {
+                        List <String> tmp = wc.suggestWords(word);
+                        if(tmp.size() > 0) {
+                            String newWord = tmp.get(0);
+                            t.changeWord(word, newWord);
+                        }
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

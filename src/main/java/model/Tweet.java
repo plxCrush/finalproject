@@ -58,8 +58,8 @@ public class Tweet {
         this.getWords().set(getWords().indexOf(word), newWord);
     }
 
-    public void generateBow(Bag bag)
-    {
+    public void generateBow(Bag bag) {
+
         this.bow = new byte[bag.size()];
 
         for (String word : words) {
@@ -78,6 +78,12 @@ public class Tweet {
         System.out.println("CONTENT : "+ this.content);
         System.out.println("TAG     : "+ this.tag);
         System.out.println("WORDS   : "+ words);
+
+    }
+
+    public void correctWords() {
+
+
 
     }
 

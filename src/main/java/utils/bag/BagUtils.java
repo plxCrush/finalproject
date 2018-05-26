@@ -4,9 +4,7 @@ import com.graphbuilder.struc.Bag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import model.Tweet;
-import utils.wordSuggestion.WordCorrector;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +16,6 @@ public class BagUtils {
     private int minWordOccur;
     private int minTfIdf;
     private int maxTfIdf;
-    private boolean useWordSuggestion;
 
     public Bag create(List<Tweet> trainTweets, List<Tweet> testTweets) {
 
@@ -49,45 +46,13 @@ public class BagUtils {
             allTweets.add(t.getWords());
         }
 
-        if (testTweets != null) {
-
-            for (Tweet t : testTweets) {
-                allTweets.add(t.getWords());
-            }
-            reduce(testTweets, allTweets);
-
-            if (this.useWordSuggestion) {
-                correctWords(testTweets);
-            }
+        for (Tweet t : testTweets) {
+            allTweets.add(t.getWords());
         }
 
         reduce(trainTweets, allTweets);
+        reduce(testTweets, allTweets);
 
-        if (this.useWordSuggestion) {
-            correctWords(trainTweets);
-        }
-
-    }
-
-    private void correctWords(List<Tweet> tweets) {
-
-        try {
-            WordCorrector wc = new WordCorrector();
-            for (Tweet t : tweets) {
-                for (String word : t.getWords()) {
-                    if (!wc.checkWord(word)) {
-                        List <String> tmp = wc.suggestWords(word);
-                        if(tmp.size() > 0) {
-                            String newWord = tmp.get(0);
-                            t.changeWord(word, newWord);
-                        }
-                    }
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void reduce(List<Tweet> tweets, List<List<String>> allTweets) {
