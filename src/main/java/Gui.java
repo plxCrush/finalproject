@@ -242,7 +242,7 @@ public class Gui {
                 consoleField.append("\nSentiment Analysis running...");
                 SentimentAnalyzer analyzer = new SentimentAnalyzer(algorithmSelector);
                 try {
-                    String info = analyzer.anaylze(trainInstances, testInstances, true);
+                    String info = analyzer.anaylzeTest(trainInstances, testInstances);
                     consoleField.append(String.format("\n%s\n",info));
                 } catch (Exception e1) {
                     e1.printStackTrace();

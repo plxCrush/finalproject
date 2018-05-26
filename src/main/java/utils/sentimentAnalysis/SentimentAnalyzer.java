@@ -17,7 +17,7 @@ public class SentimentAnalyzer {
 
     String algorithm;
 
-    public String anaylze(Instances train, Instances test, boolean testCase) throws Exception {
+    public String anaylzeTest(Instances train, Instances test) throws Exception {
 
         Classifier model;
 
