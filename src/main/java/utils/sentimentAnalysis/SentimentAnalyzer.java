@@ -1,7 +1,8 @@
 package utils.sentimentAnalysis;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import model.Tweet;
+import utils.read.TweetWriter;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
@@ -11,15 +12,16 @@ import weka.classifiers.trees.J48;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
-@AllArgsConstructor
 public class SentimentAnalyzer {
 
     String algorithm;
+    Classifier model;
 
-    public String anaylzeTest(Instances train, Instances test) throws Exception {
-
-        Classifier model;
+    public SentimentAnalyzer(String algorithm) {
 
         switch (algorithm) {
             case("ibk"):
@@ -38,6 +40,10 @@ public class SentimentAnalyzer {
                 model = new RandomForest();
         }
 
+    }
+
+    public String analyzeTest(Instances train, Instances test) throws Exception {
+
         model.buildClassifier(train);
         Evaluation eval_train = new Evaluation(test);
         eval_train.evaluateModel(model,test);
@@ -45,6 +51,30 @@ public class SentimentAnalyzer {
         return (String.format("%s Error Rate: %s - Correct Guess: %s",
                 this.algorithm, eval_train.errorRate(), eval_train.correct()));
 
+    }
+
+    public String analyze(Instances train, Instances test, List<Tweet> testTweets, String folder) throws Exception {
+
+        List<Tweet> targetTweets = new ArrayList<>();
+
+        String[] tags = {"pozitif", "negatif", "notr"};
+        model.buildClassifier(train);
+
+        System.out.println("TRAIN INSTANCE COUNT: "+train.numInstances());
+        System.out.println("TEST INSTANCE COUNT: "+test.numInstances());
+
+        for (int i = 0; i < test.numInstances(); i++) {
+
+            Double tagDouble = model.classifyInstance(test.instance(i));
+            String tag = tags[tagDouble.intValue()];
+            String content = testTweets.get(i).getContent();
+            targetTweets.add(new Tweet(tag, content));
+        }
+
+        TweetWriter writer = new TweetWriter(folder);
+        writer.writeTargetTweetsToFile(targetTweets);
+
+        return "Target tweets are tagged, check output folder...";
     }
 
 }
