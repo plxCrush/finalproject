@@ -92,17 +92,17 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                consoleField.setText("Reading tweets from input file...");
+                consoleField.setText("Reading tweets from input files...");
 
-                TweetReader tweetReader = new TweetReader(inputFilePath,
+                TweetReader trainTweetReader = new TweetReader(inputFilePath,
                         Integer.parseInt(readTweetsStartPointField.getText()),
                         Integer.parseInt(readTweetsAmountField.getText()));
 
                 List<Tweet> allTweets = new ArrayList<>();
 
                 try {
-                    allTweets = tweetReader.read();
-                    consoleField.setText(String.format("Read %s tweets", allTweets.size()));
+                    allTweets = trainTweetReader.read();
+                    consoleField.setText(String.format("Read %s input tweets\n", allTweets.size()));
 
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -110,25 +110,43 @@ public class Gui {
 
                 if (splitTweetsRadioButton.isSelected()) {
 
-                    Tweet[][] splitted = tweetReader.split(allTweets);
+                    Tweet[][] splitted = trainTweetReader.split(allTweets);
                     trainTweets = Arrays.asList(splitted[0]);
                     testTweets = Arrays.asList(splitted[1]);
                 }
                 else {
 
                     trainTweets = allTweets;
-                    testTweets = null;
-                }
 
-                allTweets.clear();
+                    if (targetFilePath.equals("")) {
+
+                        TweetReader targetTweetReader = new TweetReader();
+                        testTweets = targetTweetReader.readFromField(getSingleTweetInputField().getText());
+
+                    }
+                    else {
+
+                        // 0 means go through all rows for tweet reader
+                        TweetReader targetTweetReader = new TweetReader(targetFilePath, 1, 0);
+
+                        try {
+                            testTweets = targetTweetReader.read();
+                            consoleField.append(String.format("Read %s target tweets", testTweets.size()));
+
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+
+                    }
+                }
 
                 TweetGroupInfo info = new TweetGroupInfo();
 
                 consoleField.append(String.format("\n%s train tweets", trainTweets.size()));
                 consoleField.append(info.sentimentDistrubiton(trainTweets));
+                consoleField.append(String.format("\n%s test tweets", testTweets.size()));
 
-                if(testTweets != null) {
-                    consoleField.append(String.format("\n%s test tweets", testTweets.size()));
+                if(splitTweetsRadioButton.isSelected()) {
                     consoleField.append(info.sentimentDistrubiton(testTweets));
                 }
 
@@ -159,6 +177,11 @@ public class Gui {
                 for (Tweet t: testTweets) {
                     t.generateBow(bag);
                 }
+
+                for (Tweet t: testTweets) {
+                    t.print();
+                }
+
                 consoleField.append("\nBag of words generated...\n");
 
             }

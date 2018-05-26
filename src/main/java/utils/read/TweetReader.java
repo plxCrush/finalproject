@@ -2,6 +2,7 @@ package utils.read;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import model.Tweet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class TweetReader {
 
     String filePath;
@@ -41,7 +43,7 @@ public class TweetReader {
         for (int i = 0; i < startPoint; i++)
             iterator.next();
 
-        while (iterator.hasNext() && (counter < amount)) {
+        while (iterator.hasNext() && (counter < amount || amount == 0)) {
 
             Row nextRow = iterator.next();
             Iterator<Cell> cellIterator = nextRow.cellIterator();
@@ -61,6 +63,9 @@ public class TweetReader {
                         break;
                 }
             }
+
+            if (tag.equals("") || tag == null)
+                tag = "?";
 
             Tweet tweet = new Tweet(tag, content);
             tweets.add(tweet);
@@ -95,4 +100,15 @@ public class TweetReader {
 
     }
 
+    public List<Tweet> readFromField(String text) {
+
+        List<Tweet> tweets = new ArrayList<>();
+
+        String[] tArray = text.split("\n");
+        for (String content: tArray) {
+            tweets.add(new Tweet("?", content));
+        }
+
+        return tweets;
+    }
 }
