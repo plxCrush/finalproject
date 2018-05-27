@@ -1,6 +1,8 @@
 import com.graphbuilder.struc.Bag;
 import lombok.Data;
 import model.Tweet;
+import utils.artificialData.TranslatedTweetCreator;
+import utils.artificialData.VectoralTweetCreator;
 import utils.bag.BagUtils;
 import utils.read.ArffUtils;
 import utils.read.TweetGroupInfo;
@@ -202,7 +204,14 @@ public class Gui {
         createAndAddArtificialButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 System.out.println("CREATE AND ADD ARTIFICIAL DATA");
+
+                TranslatedTweetCreator creator = new TranslatedTweetCreator();
+                creator.withTweets(trainTweets).create();
+
+                VectoralTweetCreator creator2 = new VectoralTweetCreator();
+                creator2.withTweets(trainTweets).create();
             }
         });
 
