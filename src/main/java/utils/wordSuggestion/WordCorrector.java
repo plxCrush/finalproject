@@ -48,23 +48,18 @@ public class WordCorrector {
 
     public void correctWords(List<Tweet> tweets) {
 
-        try {
-            WordCorrector wc = new WordCorrector();
-            for (Tweet t : tweets) {
-                for (String word : t.getWords()) {
-                    if (!wc.checkWord(word)) {
-                        List <String> tmp = wc.suggestWords(word);
-                        if(tmp.size() > 0) {
-                            String newWord = tmp.get(0);
-                            t.changeWord(word, newWord);
-                        }
+        for (Tweet t : tweets) {
+            for (String word : t.getWords()) {
+                if (!checkWord(word)) {
+                    List <String> tmp = suggestWords(word);
+                    if(tmp.size() > 0) {
+                        String newWord = tmp.get(0);
+                        t.changeWord(word, newWord);
                     }
                 }
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 
 }

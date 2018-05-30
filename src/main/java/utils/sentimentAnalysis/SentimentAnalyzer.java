@@ -23,6 +23,8 @@ public class SentimentAnalyzer {
 
     public SentimentAnalyzer(String algorithm) {
 
+        this.algorithm = algorithm;
+
         switch (algorithm) {
             case("ibk"):
                 model = new IBk();
@@ -48,8 +50,12 @@ public class SentimentAnalyzer {
         Evaluation eval_train = new Evaluation(test);
         eval_train.evaluateModel(model,test);
 
-        return (String.format("%s Error Rate: %s - Correct Guess: %s",
-                this.algorithm, eval_train.errorRate(), eval_train.correct()));
+        if (Double.isNaN(eval_train.errorRate()))
+            return "";
+        else {
+            return (String.format("%s Error Rate: %s - Correct Guess: %s",
+                    this.algorithm, eval_train.errorRate(), eval_train.correct()));
+        }
 
     }
 

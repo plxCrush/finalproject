@@ -157,7 +157,7 @@
             </constraints>
             <properties>
               <font style="1"/>
-              <text value="Target File (Optional):"/>
+              <text value="Target File:"/>
             </properties>
           </component>
           <component id="1081c" class="javax.swing.JLabel" binding="OutputFileLabel">
@@ -303,7 +303,7 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Amount of Tweets to Read:"/>
+              <text value="Limit Tweet Amount to Read(0 means read all rows):"/>
             </properties>
           </component>
           <component id="5b9e1" class="javax.swing.JTextField" binding="readTweetsAmountField">

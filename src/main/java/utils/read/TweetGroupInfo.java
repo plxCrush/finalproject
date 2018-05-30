@@ -23,6 +23,9 @@ public class TweetGroupInfo {
         ne = (neCounter*100)/tweets.size();
         no = 100 - (po + ne);
 
+        if (no == 100)
+            return "\nUntagged test data";
+
         return ("\nPositive: %"+ po + ", Negative: %"+ ne + ", Neutral: %"+ no);
     }
 }

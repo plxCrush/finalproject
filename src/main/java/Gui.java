@@ -1,8 +1,6 @@
 import com.graphbuilder.struc.Bag;
 import lombok.Data;
 import model.Tweet;
-import utils.artificialData.TranslatedTweetCreator;
-import utils.artificialData.VectoralTweetCreator;
 import utils.bag.BagUtils;
 import utils.read.ArffUtils;
 import utils.read.TweetGroupInfo;
@@ -52,13 +50,13 @@ public class Gui {
         maxTfIdfField.setText("0");
 
         readTweetsStartPointField.setText("1");
-        readTweetsAmountField.setText("1000");
+        readTweetsAmountField.setText("0");
 
         randomForestRadioButton.setSelected(true);
         useWordSuggestionRadioButton.setSelected(true);
         algorithmSelector = "randomForest";
 
-        splitTweetsRadioButton.setSelected(true);
+        splitTweetsRadioButton.setSelected(false);
 
         // BUTTON ACTION LISTENERS
 
@@ -161,9 +159,7 @@ public class Gui {
                 consoleField.append(info.sentimentDistrubiton(trainTweets));
                 consoleField.append(String.format("\n%s test tweets", testTweets.size()));
 
-                if(splitTweetsRadioButton.isSelected()) {
-                    consoleField.append(info.sentimentDistrubiton(testTweets));
-                }
+                consoleField.append(info.sentimentDistrubiton(testTweets));
 
                 consoleField.append("\n");
 
@@ -207,11 +203,6 @@ public class Gui {
 
                 System.out.println("CREATE AND ADD ARTIFICIAL DATA");
 
-                TranslatedTweetCreator creator = new TranslatedTweetCreator();
-                creator.withTweets(trainTweets).create();
-
-                VectoralTweetCreator creator2 = new VectoralTweetCreator();
-                creator2.withTweets(trainTweets).create();
             }
         });
 
@@ -251,7 +242,9 @@ public class Gui {
                 consoleField.append("\nSentiment Analysis running...");
                 SentimentAnalyzer analyzer = new SentimentAnalyzer(algorithmSelector);
                 try {
-                    String info = analyzer.analyze(trainInstances, testInstances, testTweets, OUTPUT_FOLDER);
+                    String info = analyzer.analyzeTest(trainInstances, testInstances);
+                    consoleField.append(String.format("\n%s\n",info));
+                    info = analyzer.analyze(trainInstances, testInstances, testTweets, OUTPUT_FOLDER);
                     consoleField.append(String.format("\n%s\n",info));
                 } catch (Exception e1) {
                     e1.printStackTrace();
