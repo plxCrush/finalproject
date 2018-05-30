@@ -1,10 +1,13 @@
 import com.graphbuilder.struc.Bag;
 import lombok.Data;
 import model.Tweet;
+import model.WordSimilar;
+import utils.artificialData.VectoralDataCreator;
 import utils.bag.BagUtils;
 import utils.read.ArffUtils;
 import utils.read.TweetGroupInfo;
 import utils.read.TweetReader;
+import utils.read.WordSimilarReader;
 import utils.sentimentAnalysis.SentimentAnalyzer;
 import utils.wordSuggestion.WordCorrector;
 import weka.core.Instances;
@@ -30,6 +33,7 @@ public class Gui {
     public static final String DATA_FOLDER = "data/";
     public static final String trainFileName = OUTPUT_FOLDER+"train.arff";
     public static final String testFileName = OUTPUT_FOLDER+"test.arff";
+    public static final String wordSimilaritiesFile = DATA_FOLDER+"wordSimilarities.txt";
 
     public int readTweetsStartPoint = 1;
     public int readTweetsAmount = 1000;
@@ -51,6 +55,8 @@ public class Gui {
 
         readTweetsStartPointField.setText("1");
         readTweetsAmountField.setText("0");
+
+        //TODO: add uperLimit for data creation field here
 
         randomForestRadioButton.setSelected(true);
         useWordSuggestionRadioButton.setSelected(true);
@@ -201,7 +207,13 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                System.out.println("CREATE AND ADD ARTIFICIAL DATA");
+//                WordSimilarReader reader = new WordSimilarReader(wordSimilaritiesFile);
+//                List<WordSimilar> wordSimilarities = reader.getWordSimilarities();
+//
+//                VectoralDataCreator creator = new VectoralDataCreator(upperLimit);
+//                List<Tweet> createdTweets = creator.create(trainTweets);
+//
+//                trainTweets.addAll(createdTweets);
 
             }
         });
