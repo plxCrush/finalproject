@@ -1,7 +1,6 @@
 import com.graphbuilder.struc.Bag;
 import lombok.Data;
 import model.Tweet;
-import model.WordSimilar;
 import utils.artificialData.VectoralDataCreator;
 import utils.bag.BagUtils;
 import utils.read.ArffUtils;
@@ -21,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 @Data
@@ -33,10 +33,8 @@ public class Gui {
     public static final String DATA_FOLDER = "data/";
     public static final String trainFileName = OUTPUT_FOLDER+"train.arff";
     public static final String testFileName = OUTPUT_FOLDER+"test.arff";
-    public static final String wordSimilaritiesFile = DATA_FOLDER+"wordSimilarities.txt";
-
-    public int readTweetsStartPoint = 1;
-    public int readTweetsAmount = 1000;
+    public static final String wordSimilaritiesFile = DATA_FOLDER+"30022wordSimilarities.txt";
+    public static final String createdTweetsFile = OUTPUT_FOLDER+"createdTweets.txt";
 
     public String algorithmSelector;
 
@@ -56,7 +54,7 @@ public class Gui {
         readTweetsStartPointField.setText("1");
         readTweetsAmountField.setText("0");
 
-        //TODO: add uperLimit for data creation field here
+        upperLimitArtificialField.setText("100");
 
         randomForestRadioButton.setSelected(true);
         useWordSuggestionRadioButton.setSelected(true);
@@ -168,7 +166,6 @@ public class Gui {
                 consoleField.append(info.sentimentDistrubiton(testTweets));
 
                 consoleField.append("\n");
-
             }
         });
 
@@ -194,12 +191,7 @@ public class Gui {
                     t.generateBow(bag);
                 }
 
-                for (Tweet t: testTweets) {
-                    t.print();
-                }
-
                 consoleField.append("\nBag of words generated...\n");
-
             }
         });
 
@@ -207,14 +199,23 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-//                WordSimilarReader reader = new WordSimilarReader(wordSimilaritiesFile);
-//                List<WordSimilar> wordSimilarities = reader.getWordSimilarities();
-//
-//                VectoralDataCreator creator = new VectoralDataCreator(upperLimit);
-//                List<Tweet> createdTweets = creator.create(trainTweets);
-//
-//                trainTweets.addAll(createdTweets);
+                consoleField.append("\nCreating tweets...\n");
 
+                WordSimilarReader reader = new WordSimilarReader(wordSimilaritiesFile);
+                HashMap<String, String> similarities = reader.getWordSimilarities();
+
+                VectoralDataCreator creator = new VectoralDataCreator(Integer.parseInt(upperLimitArtificialField.getText()), createdTweetsFile);
+                List<Tweet> createdTweets = new ArrayList<>();
+                try {
+                    createdTweets = creator.create(trainTweets, similarities);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                trainTweets.addAll(createdTweets);
+
+                consoleField.append(String.format("\nCreated %s tweets.\n",createdTweets.size()));
+                consoleField.append(String.format("\nNew amount of train tweets: %s\n",trainTweets.size()));
             }
         });
 
@@ -350,6 +351,7 @@ public class Gui {
     private JTextField maxTfIdfField;
     private JRadioButton useWordSuggestionRadioButton;
     private JButton openOutputFolderButton;
+    private JTextField upperLimitArtificialField;
 
     public static void main(String[] args) {
 

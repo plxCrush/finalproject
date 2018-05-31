@@ -2,10 +2,13 @@ package utils.read;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import model.WordSimilar;
+import model.Tweet;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
 
 @Data
 @AllArgsConstructor
@@ -13,13 +16,27 @@ public class WordSimilarReader {
 
     private String path;
 
-    public List<WordSimilar> getWordSimilarities() {
+    public HashMap<String, String> getWordSimilarities() {
 
-        List<WordSimilar> wordSimilarities = new ArrayList<>();
+        HashMap<String, String> similarities = new HashMap<>();
 
-        //TODO: read similarity file line by line and push to arraylist here
+        similarities.put("key", "value");
 
-        return wordSimilarities;
+        try {
+            File file = new File(path);
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] parts = line.split(" ");
+                similarities.put(parts[0], parts[1]);
+            }
+            fileReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return similarities;
 
     }
 }
