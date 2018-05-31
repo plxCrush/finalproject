@@ -14,6 +14,7 @@ import java.util.List;
 public class VectoralDataCreator {
 
     private int upperLimit;
+    private int upperLimitForOneTweet;
     private String outPath;
 
     public List<Tweet> create(List<Tweet> trainTweets, HashMap<String, String> similarities) throws IOException {
@@ -27,6 +28,8 @@ public class VectoralDataCreator {
 
         for (Tweet t: trainTweets) {
 
+            int perTweetCounter = 0;
+
             for(String word: t.getWords()) {
 
                 if(similarities.containsKey(word)) {
@@ -39,14 +42,16 @@ public class VectoralDataCreator {
                     Tweet created = new Tweet(tag, content);
                     createdTweets.add(created);
                     counter++;
+                    perTweetCounter++;
 
                     writer.write(t.getContent()+" || "+ created.getContent()+"\n");
 
-                    break;
+                    if (perTweetCounter > 0 && perTweetCounter >= upperLimitForOneTweet)
+                        break;
                 }
             }
 
-            if (counter >= upperLimit)
+            if (upperLimit > 0 && counter >= upperLimit)
                 break;
         }
 

@@ -40,6 +40,7 @@ public class Gui {
 
     public List<Tweet> trainTweets;
     public List<Tweet> testTweets;
+    public List<Tweet> createdTweets;
 
     public Bag bag;
 
@@ -54,7 +55,8 @@ public class Gui {
         readTweetsStartPointField.setText("1");
         readTweetsAmountField.setText("0");
 
-        upperLimitArtificialField.setText("100");
+        upperLimitArtificialField.setText("0");
+        upperLimitForOneTweetField.setText("1");
 
         randomForestRadioButton.setSelected(true);
         useWordSuggestionRadioButton.setSelected(true);
@@ -201,11 +203,17 @@ public class Gui {
 
                 consoleField.append("\nCreating tweets...\n");
 
+                if(createdTweets != null && createdTweets.size() > 0)
+                    trainTweets.removeAll(createdTweets);
+
                 WordSimilarReader reader = new WordSimilarReader(wordSimilaritiesFile);
                 HashMap<String, String> similarities = reader.getWordSimilarities();
 
-                VectoralDataCreator creator = new VectoralDataCreator(Integer.parseInt(upperLimitArtificialField.getText()), createdTweetsFile);
-                List<Tweet> createdTweets = new ArrayList<>();
+                VectoralDataCreator creator = new VectoralDataCreator(
+                        Integer.parseInt(upperLimitArtificialField.getText()),
+                        Integer.parseInt(upperLimitForOneTweetField.getText()),
+                        createdTweetsFile);
+                createdTweets = new ArrayList<>();
                 try {
                     createdTweets = creator.create(trainTweets, similarities);
                 } catch (IOException e1) {
@@ -352,6 +360,7 @@ public class Gui {
     private JRadioButton useWordSuggestionRadioButton;
     private JButton openOutputFolderButton;
     private JTextField upperLimitArtificialField;
+    private JTextField upperLimitForOneTweetField;
 
     public static void main(String[] args) {
 
