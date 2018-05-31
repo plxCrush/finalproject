@@ -40,7 +40,7 @@ public class VectoralDataCreator {
                     createdTweets.add(created);
                     counter++;
 
-                    writer.write(t.getContent()+" - "+ created.getContent()+"\n");
+                    writer.write(t.getContent()+" || "+ created.getContent()+"\n");
 
                     break;
                 }
