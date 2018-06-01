@@ -53,8 +53,8 @@ public class SentimentAnalyzer {
         if (Double.isNaN(eval_train.errorRate()))
             return "";
         else {
-            return (String.format("%s Error Rate: %s - Correct Guess: %s",
-                    this.algorithm, eval_train.errorRate(), eval_train.correct()));
+            return (String.format("\n%s Success Rate: %s - Correct Guess: %s",
+                    this.algorithm, eval_train.pctCorrect(), eval_train.correct()));
         }
 
     }
