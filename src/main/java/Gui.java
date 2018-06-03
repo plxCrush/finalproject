@@ -38,6 +38,7 @@ public class Gui {
 
     public String algorithmSelector;
     public String tweetRepresentationInBag;
+    public String dataCreationMethod;
 
     public List<Tweet> trainTweets;
     public List<Tweet> testTweets;
@@ -63,7 +64,8 @@ public class Gui {
         useWordSuggestionRadioButton.setSelected(true);
         algorithmSelector = "randomForest";
 
-        splitTweetsRadioButton.setSelected(false);
+        splitTweetsRadioButton.setSelected(true);
+        splitTrainPercentageField.setText("50");
 
         useTfRadioButton.setSelected(true);
         tweetRepresentationInBag = "tf";
@@ -122,7 +124,8 @@ public class Gui {
 
                 if (splitTweetsRadioButton.isSelected()) {
 
-                    Tweet[][] splitted = trainTweetReader.split(allTweets);
+                    Tweet[][] splitted = trainTweetReader.split(allTweets,
+                            Integer.parseInt(splitTrainPercentageField.getText()));
                     trainTweets = Arrays.asList(splitted[0]);
                     testTweets = Arrays.asList(splitted[1]);
                 }
@@ -401,6 +404,7 @@ public class Gui {
     private JTextField upperLimitForOneTweetField;
     private JRadioButton useTfRadioButton;
     private JRadioButton useTfIdfRadioButton;
+    private JTextField splitTrainPercentageField;
 
     public static void main(String[] args) {
 

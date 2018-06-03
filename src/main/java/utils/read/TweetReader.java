@@ -78,20 +78,22 @@ public class TweetReader {
         return tweets;
     }
 
-    public Tweet[][] split(List<Tweet> allTweets) {
+    public Tweet[][] split(List<Tweet> allTweets, int trainPercentage) {
 
-        int half = allTweets.size()/2;
+        int trainAmount = (allTweets.size() * trainPercentage) / 100;
+        int testAmount = allTweets.size() - trainAmount;
+
         Collections.shuffle(allTweets);
         Tweet[] all = new Tweet[allTweets.size()];
-        Tweet[] trainTweets = new Tweet[half];
-        Tweet[] testTweets = new Tweet[half];
+        Tweet[] trainTweets = new Tweet[trainAmount];
+        Tweet[] testTweets = new Tweet[testAmount];
 
         allTweets.toArray(all);
 
-        for (int i=0; i < half; i++)
+        for (int i=0; i < trainAmount; i++)
             trainTweets[i] = all[i];
-        for(int i=half; i < all.length; i++)
-            testTweets[i-half] = all[i];
+        for(int i=trainAmount; i < all.length; i++)
+            testTweets[i-trainAmount] = all[i];
 
         Tweet[][] res = new Tweet[2][];
         res[0] = trainTweets;
