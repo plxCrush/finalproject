@@ -33,7 +33,7 @@ public class TfIdfCalculator {
                 }
             }
         }
-        return Math.log(docs.size() / n);
+        return 1 + Math.log(docs.size() / n);
     }
 
     public boolean isRare(List<List<String>> docs, String term, int minWordOccur) {

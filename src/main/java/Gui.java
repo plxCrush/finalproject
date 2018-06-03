@@ -37,6 +37,7 @@ public class Gui {
     public static final String createdTweetsFile = OUTPUT_FOLDER+"createdTweets.txt";
 
     public String algorithmSelector;
+    public String tweetRepresentationInBag;
 
     public List<Tweet> trainTweets;
     public List<Tweet> testTweets;
@@ -63,6 +64,9 @@ public class Gui {
         algorithmSelector = "randomForest";
 
         splitTweetsRadioButton.setSelected(false);
+
+        useTfRadioButton.setSelected(true);
+        tweetRepresentationInBag = "tf";
 
         // BUTTON ACTION LISTENERS
 
@@ -273,6 +277,39 @@ public class Gui {
             }
         });
 
+        openOutputFolderButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Desktop.getDesktop().open(new File(OUTPUT_FOLDER));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        // TF-IDF REPRESENTATION RADIO BUTTON ACTION LISTENERS
+
+        final ButtonGroup group2 = new ButtonGroup();
+        group2.add(useTfRadioButton);
+        group2.add(useTfIdfRadioButton);
+
+        useTfIdfRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                tweetRepresentationInBag = "tfidf";
+            }
+        });
+        useTfRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                tweetRepresentationInBag = "tf";
+            }
+        });
+
+
         // ALGORITHM SELECT RADIO BUTTON ACTION LISTENERS
 
         final ButtonGroup group = new ButtonGroup();
@@ -317,16 +354,6 @@ public class Gui {
             }
         });
 
-        openOutputFolderButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Desktop.getDesktop().open(new File(OUTPUT_FOLDER));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
     }
 
     private JPanel MainPanel;
@@ -361,6 +388,8 @@ public class Gui {
     private JButton openOutputFolderButton;
     private JTextField upperLimitArtificialField;
     private JTextField upperLimitForOneTweetField;
+    private JRadioButton useTfRadioButton;
+    private JRadioButton useTfIdfRadioButton;
 
     public static void main(String[] args) {
 
