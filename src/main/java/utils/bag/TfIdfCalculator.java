@@ -5,8 +5,8 @@ import java.util.List;
 public class TfIdfCalculator {
 
     /**
-     * @param doc  list of strings
-     * @param term String represents a term
+     * @param doc  words of tweet
+     * @param term word to check
      * @return term frequency of term in document
      */
     public double tf(List<String> doc, String term) {
@@ -19,8 +19,8 @@ public class TfIdfCalculator {
     }
 
     /**
-     * @param docs list of list of strings represents the dataset
-     * @param term String represents a term
+     * @param docs all tweets
+     * @param term word to check
      * @return the inverse term frequency of term in documents
      */
     public double idf(List<List<String>> docs, String term) {

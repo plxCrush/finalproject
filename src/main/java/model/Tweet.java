@@ -2,16 +2,18 @@ package model;
 
 import com.graphbuilder.struc.Bag;
 import lombok.Data;
+import utils.bag.TfIdfCalculator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class Tweet {
 
     private String tag;
     private String content;
-    private ArrayList<String> words;
-    public byte[] bow;
+    private List<String> words;
+    public double[] bow;
 
     public Tweet (String tag, String content) {
 
@@ -58,14 +60,27 @@ public class Tweet {
         this.getWords().set(getWords().indexOf(word), newWord);
     }
 
-    public void generateBow(Bag bag) {
+    public void generateBow(Bag bag, List<List<String>> allTweets, String representation) {
 
-        this.bow = new byte[bag.size()];
+        this.bow = new double[bag.size()];
+
+        TfIdfCalculator calculator = new TfIdfCalculator();
 
         for (String word : words) {
-            if (bag.contains(word))
-                this.bow[bag.indexOf(word)]++;
+
+            if (bag.contains(word)) {
+
+                if (representation.equals("tf")) {
+
+                    bow[bag.indexOf(word)] = calculator.tf(this.getWords(), word);
+                }
+                else if (representation.equals("tfIdf")) {
+
+                    bow[bag.indexOf(word)] = calculator.tfIdf(this.getWords(), allTweets, word);
+                }
+            }
         }
+
     }
 
     public void print() {

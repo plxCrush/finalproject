@@ -190,11 +190,22 @@ public class Gui {
                 consoleField.append(String.format("\nBag is created with size of %s\n",bag.size()));
 
                 consoleField.append("\nGenerating bag of words for each tweet...");
+
+                List<List<String>> allTweets = new ArrayList<>();
+
+                for (Tweet t : trainTweets) {
+                    allTweets.add(t.getWords());
+                }
+
+                for (Tweet t : testTweets) {
+                    allTweets.add(t.getWords());
+                }
+
                 for (Tweet t: trainTweets) {
-                    t.generateBow(bag);
+                    t.generateBow(bag, allTweets, tweetRepresentationInBag);
                 }
                 for (Tweet t: testTweets) {
-                    t.generateBow(bag);
+                    t.generateBow(bag, allTweets, tweetRepresentationInBag);
                 }
 
                 consoleField.append("\nBag of words generated...\n");
@@ -298,7 +309,7 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                tweetRepresentationInBag = "tfidf";
+                tweetRepresentationInBag = "tfIdf";
             }
         });
         useTfRadioButton.addActionListener(new ActionListener() {
