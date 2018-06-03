@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="MainPanel" layout-manager="GridLayoutManager" row-count="6" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="1126" height="852"/>
+      <xy x="20" y="20" width="1126" height="871"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -74,17 +74,25 @@
               <text value="Classify Algorithm For Sentiment Analysis"/>
             </properties>
           </component>
-          <component id="e81e9" class="javax.swing.JLabel">
+          <component id="91b02" class="javax.swing.JLabel">
             <constraints>
-              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Upper limit for 1 train tweet:"/>
+            </properties>
+          </component>
+          <component id="67cb2" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Upper limit:"/>
             </properties>
           </component>
-          <component id="f504a" class="javax.swing.JTextField" binding="upperLimitArtificialField">
+          <component id="b3b8b" class="javax.swing.JTextField" binding="upperLimitForOneTweetField">
             <constraints>
-              <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="365" height="-1"/>
               </grid>
             </constraints>
@@ -92,15 +100,7 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="58244" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Upper limit for 1 train tweet:"/>
-            </properties>
-          </component>
-          <component id="d2ba5" class="javax.swing.JTextField" binding="upperLimitForOneTweetField">
+          <component id="787c3" class="javax.swing.JTextField" binding="upperLimitArtificialField">
             <constraints>
               <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="365" height="-1"/>
@@ -108,6 +108,22 @@
             </constraints>
             <properties>
               <text value=""/>
+            </properties>
+          </component>
+          <component id="f0991" class="javax.swing.JRadioButton" binding="useVectoralDataCreationRadioButton">
+            <constraints>
+              <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Use similar word replacement for creation"/>
+            </properties>
+          </component>
+          <component id="57979" class="javax.swing.JRadioButton" binding="useTranslationDataCreationRadioButton">
+            <constraints>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Use forward-backwards translation for creation"/>
             </properties>
           </component>
         </children>
@@ -282,7 +298,7 @@
           </component>
         </children>
       </grid>
-      <grid id="6115f" binding="SettingsPanel" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="6115f" binding="SettingsPanel" layout-manager="GridLayoutManager" row-count="6" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="10" left="10" bottom="10" right="10"/>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -380,7 +396,7 @@
           </component>
           <component id="25e66" class="javax.swing.JRadioButton" binding="splitTweetsRadioButton">
             <constraints>
-              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Split Input Tweets as Train and Test with Train Percentage:"/>
@@ -388,7 +404,7 @@
           </component>
           <component id="f6f8" class="javax.swing.JLabel">
             <constraints>
-              <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <font/>
@@ -397,7 +413,7 @@
           </component>
           <component id="9dd29" class="javax.swing.JTextField" binding="maxTfIdfField">
             <constraints>
-              <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -407,7 +423,7 @@
           </component>
           <component id="a1631" class="javax.swing.JRadioButton" binding="useWordSuggestionRadioButton">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Correct words using Zemberek word suggestion"/>
@@ -415,7 +431,7 @@
           </component>
           <component id="6c8df" class="javax.swing.JRadioButton" binding="useTfRadioButton">
             <constraints>
-              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Use tf representation of tweets"/>
@@ -423,7 +439,7 @@
           </component>
           <component id="f9985" class="javax.swing.JRadioButton" binding="useTfIdfRadioButton">
             <constraints>
-              <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Use tf-idf representation of tweets"/>
@@ -431,12 +447,20 @@
           </component>
           <component id="62c0f" class="javax.swing.JTextField" binding="splitTrainPercentageField">
             <constraints>
-              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
             <properties>
               <text value=""/>
+            </properties>
+          </component>
+          <component id="f37de" class="javax.swing.JRadioButton" binding="containsTranslatedDataRadioButton">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Input File Contains translated tweets too"/>
             </properties>
           </component>
         </children>

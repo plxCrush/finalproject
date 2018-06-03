@@ -11,13 +11,15 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class VectoralDataCreator {
+public class VectoralDataCreator implements DataCreator{
 
     private int upperLimit;
     private int upperLimitForOneTweet;
     private String outPath;
+    HashMap<String, String> similarities;
 
-    public List<Tweet> create(List<Tweet> trainTweets, HashMap<String, String> similarities) throws IOException {
+    @Override
+    public List<Tweet> create(List<Tweet> trainTweets) throws IOException {
 
         List<Tweet> createdTweets = new ArrayList<>();
 

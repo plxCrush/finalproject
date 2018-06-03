@@ -1,6 +1,8 @@
 import com.graphbuilder.struc.Bag;
 import lombok.Data;
 import model.Tweet;
+import utils.artificialData.DataCreator;
+import utils.artificialData.TranslationDataCreator;
 import utils.artificialData.VectoralDataCreator;
 import utils.bag.BagUtils;
 import utils.read.ArffUtils;
@@ -26,7 +28,7 @@ import java.util.List;
 @Data
 public class Gui {
 
-    public String inputFilePath = "data/3969tweets.xls";
+    public String inputFilePath = "data/3000+3000TaggedTranslatedForTestNEW.xls";
     public String targetFilePath = "";
 
     public static final String OUTPUT_FOLDER = "output/";
@@ -40,9 +42,11 @@ public class Gui {
     public String tweetRepresentationInBag;
     public String dataCreationMethod;
 
+    public List<Tweet> allInputTweets;
     public List<Tweet> trainTweets;
     public List<Tweet> testTweets;
     public List<Tweet> createdTweets;
+    public List<Tweet> translatedTweets;
 
     public Bag bag;
 
@@ -50,25 +54,33 @@ public class Gui {
 
         // SETTING DEFAULT VALUES
 
-        minWordOccurField.setText("5");
-        minTfIdfField.setText("0");
-        maxTfIdfField.setText("0");
-
+        // read options
         readTweetsStartPointField.setText("1");
         readTweetsAmountField.setText("0");
-
-        upperLimitArtificialField.setText("0");
-        upperLimitForOneTweetField.setText("1");
-
-        randomForestRadioButton.setSelected(true);
-        useWordSuggestionRadioButton.setSelected(true);
-        algorithmSelector = "randomForest";
 
         splitTweetsRadioButton.setSelected(true);
         splitTrainPercentageField.setText("50");
 
+        containsTranslatedDataRadioButton.setSelected(true);
+
+        // bag options
+        minWordOccurField.setText("5");
+        minTfIdfField.setText("0");
+        maxTfIdfField.setText("0");
+
         useTfRadioButton.setSelected(true);
         tweetRepresentationInBag = "tf";
+
+        // algorithm options
+        randomForestRadioButton.setSelected(true);
+        useWordSuggestionRadioButton.setSelected(true);
+        algorithmSelector = "randomForest";
+
+        //artificial data options
+        useVectoralDataCreationRadioButton.setSelected(true);
+        dataCreationMethod = "vector";
+        upperLimitArtificialField.setText("0");
+        upperLimitForOneTweetField.setText("1");
 
         // BUTTON ACTION LISTENERS
 
@@ -113,10 +125,23 @@ public class Gui {
                         Integer.parseInt(readTweetsAmountField.getText()));
 
                 List<Tweet> allTweets = new ArrayList<>();
+                allInputTweets = new ArrayList<>();
 
                 try {
-                    allTweets = trainTweetReader.read();
-                    consoleField.setText(String.format("Read %s input tweets\n", allTweets.size()));
+                    allInputTweets = trainTweetReader.read();
+                    consoleField.setText(String.format("Read %s input tweets\n", allInputTweets.size()));
+
+                    if (containsTranslatedDataRadioButton.isSelected()) {
+
+                        Tweet[][] splitted = trainTweetReader.split(allInputTweets, 50);
+                        allTweets = new ArrayList<>(Arrays.asList(splitted[0]));
+                        translatedTweets = new ArrayList<>(Arrays.asList(splitted[1]));
+                    }
+
+                    else{
+
+                        allTweets = allInputTweets;
+                    }
 
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -126,8 +151,8 @@ public class Gui {
 
                     Tweet[][] splitted = trainTweetReader.split(allTweets,
                             Integer.parseInt(splitTrainPercentageField.getText()));
-                    trainTweets = Arrays.asList(splitted[0]);
-                    testTweets = Arrays.asList(splitted[1]);
+                    trainTweets = new ArrayList<>(Arrays.asList(splitted[0]));
+                    testTweets = new ArrayList<>(Arrays.asList(splitted[1]));
                 }
                 else {
 
@@ -171,8 +196,9 @@ public class Gui {
                 consoleField.append(String.format("\n%s train tweets", trainTweets.size()));
                 consoleField.append(info.sentimentDistrubiton(trainTweets));
                 consoleField.append(String.format("\n%s test tweets", testTweets.size()));
-
                 consoleField.append(info.sentimentDistrubiton(testTweets));
+//                consoleField.append(String.format("\n%s translated tweets", translatedTweets.size()));
+//                consoleField.append(info.sentimentDistrubiton(translatedTweets));
 
                 consoleField.append("\n");
             }
@@ -224,16 +250,30 @@ public class Gui {
                 if(createdTweets != null && createdTweets.size() > 0)
                     trainTweets.removeAll(createdTweets);
 
-                WordSimilarReader reader = new WordSimilarReader(wordSimilaritiesFile);
-                HashMap<String, String> similarities = reader.getWordSimilarities();
+                DataCreator creator;
 
-                VectoralDataCreator creator = new VectoralDataCreator(
-                        Integer.parseInt(upperLimitArtificialField.getText()),
-                        Integer.parseInt(upperLimitForOneTweetField.getText()),
-                        createdTweetsFile);
+                if (dataCreationMethod.equals("vector")) {
+
+                    WordSimilarReader reader = new WordSimilarReader(wordSimilaritiesFile);
+                    HashMap<String, String> similarities = reader.getWordSimilarities();
+
+                    creator = new VectoralDataCreator(
+                            Integer.parseInt(upperLimitArtificialField.getText()),
+                            Integer.parseInt(upperLimitForOneTweetField.getText()),
+                            createdTweetsFile,
+                            similarities);
+                }
+
+                else {
+
+                    creator = new TranslationDataCreator(allInputTweets,
+                            translatedTweets.size(),
+                            createdTweetsFile);
+                }
+
                 createdTweets = new ArrayList<>();
                 try {
-                    createdTweets = creator.create(trainTweets, similarities);
+                    createdTweets = creator.create(trainTweets);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -302,6 +342,24 @@ public class Gui {
             }
         });
 
+        // DATA CREATION RADIO BUTTON ACTION LISTENERS
+        final ButtonGroup group3 = new ButtonGroup();
+        group3.add(useVectoralDataCreationRadioButton);
+        group3.add(useTranslationDataCreationRadioButton);
+
+        useTranslationDataCreationRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dataCreationMethod = "translation";
+            }
+        });
+        useVectoralDataCreationRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dataCreationMethod = "vector";
+            }
+        });
+
         // TF-IDF REPRESENTATION RADIO BUTTON ACTION LISTENERS
 
         final ButtonGroup group2 = new ButtonGroup();
@@ -322,7 +380,6 @@ public class Gui {
                 tweetRepresentationInBag = "tf";
             }
         });
-
 
         // ALGORITHM SELECT RADIO BUTTON ACTION LISTENERS
 
@@ -367,7 +424,6 @@ public class Gui {
                 algorithmSelector = "ibk";
             }
         });
-
     }
 
     private JPanel MainPanel;
@@ -405,6 +461,9 @@ public class Gui {
     private JRadioButton useTfRadioButton;
     private JRadioButton useTfIdfRadioButton;
     private JTextField splitTrainPercentageField;
+    private JRadioButton useVectoralDataCreationRadioButton;
+    private JRadioButton useTranslationDataCreationRadioButton;
+    private JRadioButton containsTranslatedDataRadioButton;
 
     public static void main(String[] args) {
 
