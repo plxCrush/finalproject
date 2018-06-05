@@ -26,9 +26,9 @@ public class TranslationDataCreator implements DataCreator {
 
         for (Tweet trainTweet: trainTweets) {
 
-            Tweet translatedTweet = allTweets.get(trainTweets.indexOf(trainTweet) + size);
+            Tweet translatedTweet = allTweets.get(trainTweet.getOriginalSeq() + size);
 
-            if (!isSimilar(trainTweet, translatedTweet)) {
+            if (!isSame(trainTweet, translatedTweet)) {
 
                 createdTweets.add(translatedTweet);
                 writer.write(trainTweet.getContent()+" || "+ translatedTweet.getContent()+"\n");
@@ -42,7 +42,7 @@ public class TranslationDataCreator implements DataCreator {
         return createdTweets;
     }
 
-    private boolean isSimilar(Tweet t1, Tweet t2) {
+    private boolean isSame(Tweet t1, Tweet t2) {
 
         return t1.getContent().equals(t2.getContent());
     }

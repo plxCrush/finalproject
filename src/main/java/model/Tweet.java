@@ -14,11 +14,13 @@ public class Tweet {
     private String content;
     private List<String> words;
     public double[] bow;
+    private int originalSeq;
 
-    public Tweet (String tag, String content) {
+    public Tweet (String tag, String content, int originalSeq) {
 
         this.tag = tag;
         this.content = content;
+        this.originalSeq = originalSeq;
 
         this.words = new ArrayList<>();
         String tmp[] = this.content.split(" ");
@@ -40,6 +42,19 @@ public class Tweet {
         }
 
         return x.toString().trim();
+    }
+
+    public void resetWords() {
+
+        this.words = new ArrayList<>();
+        String tmp[] = this.content.split(" ");
+        for (String word : tmp) {
+            if (!containsLink(word)) {
+                String x = clearContent(word);
+                if (!x.equals("") && x.length()>1)
+                    this.words.add(x);
+            }
+        }
     }
 
     private String clearContent(String x) {

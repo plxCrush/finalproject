@@ -14,8 +14,8 @@ import java.util.List;
 public class BagUtils {
 
     private int minWordOccur;
-    private int minTfIdf;
-    private int maxTfIdf;
+    private double minTfIdf;
+    private double maxTfIdf;
 
     public Bag create(List<Tweet> trainTweets, List<Tweet> testTweets) {
 
@@ -70,20 +70,23 @@ public class BagUtils {
                 double tfIdfValue = tfIdfCalculator.tfIdf(t.getWords(), allTweets, tmp);
 
                 if (minWordOccur > 0) {
-                    if (tfIdfCalculator.isRare(allTweets, tmp, minWordOccur))
+                    if (tfIdfCalculator.isRare(allTweets, tmp, minWordOccur)) {
                         iterator.remove();
-                    removed = true;
+                        removed = true;
+                    }
                 }
 
                 if (!removed && minTfIdf > 0) {
-                    if (tfIdfValue < this.minTfIdf)
+                    if (tfIdfValue < this.minTfIdf) {
                         iterator.remove();
-                    removed = true;
+                        removed = true;
+                    }
                 }
 
                 if (!removed && maxTfIdf > 0) {
-                    if (tfIdfValue > this.maxTfIdf)
+                    if (tfIdfValue > this.maxTfIdf){
                         iterator.remove();
+                    }
                 }
             }
         }

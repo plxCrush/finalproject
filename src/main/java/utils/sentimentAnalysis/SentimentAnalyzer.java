@@ -74,7 +74,7 @@ public class SentimentAnalyzer {
             Double tagDouble = model.classifyInstance(test.instance(i));
             String tag = tags[tagDouble.intValue()];
             String content = testTweets.get(i).getContent();
-            targetTweets.add(new Tweet(tag, content));
+            targetTweets.add(new Tweet(tag, content, 0));
         }
 
         TweetWriter writer = new TweetWriter(folder);

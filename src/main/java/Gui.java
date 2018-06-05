@@ -126,6 +126,7 @@ public class Gui {
 
                 List<Tweet> allTweets = new ArrayList<>();
                 allInputTweets = new ArrayList<>();
+                translatedTweets = new ArrayList<>();
 
                 try {
                     allInputTweets = trainTweetReader.read();
@@ -133,9 +134,17 @@ public class Gui {
 
                     if (containsTranslatedDataRadioButton.isSelected()) {
 
-                        Tweet[][] splitted = trainTweetReader.split(allInputTweets, 50);
+                        Tweet[][] splitted = trainTweetReader.split(allInputTweets, 50, false);
                         allTweets = new ArrayList<>(Arrays.asList(splitted[0]));
                         translatedTweets = new ArrayList<>(Arrays.asList(splitted[1]));
+
+//                        for (Tweet t: allTweets)
+//                            t.print();
+//
+//                        System.out.println("translated \n \n");
+//
+//                        for (Tweet t: translatedTweets)
+//                            t.print();
                     }
 
                     else{
@@ -150,7 +159,8 @@ public class Gui {
                 if (splitTweetsRadioButton.isSelected()) {
 
                     Tweet[][] splitted = trainTweetReader.split(allTweets,
-                            Integer.parseInt(splitTrainPercentageField.getText()));
+                            Integer.parseInt(splitTrainPercentageField.getText()),
+                            true);
                     trainTweets = new ArrayList<>(Arrays.asList(splitted[0]));
                     testTweets = new ArrayList<>(Arrays.asList(splitted[1]));
                 }
@@ -197,7 +207,7 @@ public class Gui {
                 consoleField.append(info.sentimentDistrubiton(trainTweets));
                 consoleField.append(String.format("\n%s test tweets", testTweets.size()));
                 consoleField.append(info.sentimentDistrubiton(testTweets));
-//                consoleField.append(String.format("\n%s translated tweets", translatedTweets.size()));
+                consoleField.append(String.format("\n%s translated tweets", translatedTweets.size()));
 //                consoleField.append(info.sentimentDistrubiton(translatedTweets));
 
                 consoleField.append("\n");
@@ -209,8 +219,8 @@ public class Gui {
             public void actionPerformed(ActionEvent e) {
 
                 BagUtils bagUtils = new BagUtils(Integer.parseInt(minWordOccurField.getText()),
-                        Integer.parseInt(minTfIdfField.getText()),
-                        Integer.parseInt(maxTfIdfField.getText()));
+                        Double.parseDouble(minTfIdfField.getText()),
+                        Double.parseDouble(maxTfIdfField.getText()));
 
                 consoleField.append("\nFiltering tweet words by your settings...");
                 bagUtils.reduceTweetWords(trainTweets, testTweets);
@@ -323,8 +333,8 @@ public class Gui {
                 try {
                     String info = analyzer.analyzeTest(trainInstances, testInstances);
                     consoleField.append(String.format("\n%s\n",info));
-                    info = analyzer.analyze(trainInstances, testInstances, testTweets, OUTPUT_FOLDER);
-                    consoleField.append(String.format("\n%s\n",info));
+//                    info = analyzer.analyze(trainInstances, testInstances, testTweets, OUTPUT_FOLDER);
+//                    consoleField.append(String.format("\n%s\n",info));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -339,6 +349,44 @@ public class Gui {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
+            }
+        });
+
+        clearCreatedDataFromButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(createdTweets != null && createdTweets.size() > 0) {
+                    trainTweets.removeAll(createdTweets);
+                }
+
+                consoleField.append(String.format("\nNew amount of train tweets: %s\n",trainTweets.size()));
+            }
+        });
+
+        resetWordsOfTweetsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                for (Tweet t: trainTweets) {
+                    t.resetWords();
+                }
+                for (Tweet t: testTweets) {
+                    t.resetWords();
+                }
+
+                if (useWordSuggestionRadioButton.isSelected()) {
+
+                    try {
+                        WordCorrector wordCorrector = new WordCorrector();
+                        wordCorrector.correctWords(trainTweets);
+                        wordCorrector.correctWords(testTweets);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+                consoleField.append("\nTweet words were reset...");
             }
         });
 
@@ -464,11 +512,14 @@ public class Gui {
     private JRadioButton useVectoralDataCreationRadioButton;
     private JRadioButton useTranslationDataCreationRadioButton;
     private JRadioButton containsTranslatedDataRadioButton;
+    private JButton clearCreatedDataFromButton;
+    private JButton resetWordsOfTweetsButton;
 
     public static void main(String[] args) {
 
         JFrame frame = new JFrame("Sentiment Analysis & Artificial Data");
-        frame.setContentPane(new Gui().getMainPanel());
+        Gui gui = new Gui();
+        frame.setContentPane(gui.getMainPanel());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.pack();
         frame.setSize(1200, 800);

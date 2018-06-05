@@ -67,7 +67,7 @@ public class TweetReader {
             if (tag.equals("") || tag == null)
                 tag = "?";
 
-            Tweet tweet = new Tweet(tag, content);
+            Tweet tweet = new Tweet(tag, content, counter);
             tweets.add(tweet);
             counter++;
         }
@@ -78,12 +78,15 @@ public class TweetReader {
         return tweets;
     }
 
-    public Tweet[][] split(List<Tweet> allTweets, int trainPercentage) {
+    public Tweet[][] split(List<Tweet> allTweets, int trainPercentage, boolean randomize) {
 
         int trainAmount = (allTweets.size() * trainPercentage) / 100;
         int testAmount = allTweets.size() - trainAmount;
 
-        Collections.shuffle(allTweets);
+        if (randomize) {
+            Collections.shuffle(allTweets);
+        }
+
         Tweet[] all = new Tweet[allTweets.size()];
         Tweet[] trainTweets = new Tweet[trainAmount];
         Tweet[] testTweets = new Tweet[testAmount];
@@ -108,7 +111,7 @@ public class TweetReader {
 
         String[] tArray = text.split("\n");
         for (String content: tArray) {
-            tweets.add(new Tweet("?", content));
+            tweets.add(new Tweet("?", content, 0));
         }
 
         return tweets;

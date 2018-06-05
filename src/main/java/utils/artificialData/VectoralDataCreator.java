@@ -41,7 +41,7 @@ public class VectoralDataCreator implements DataCreator{
                     content = t.wordsToString();
                     content = content.replaceFirst(word, similarities.get(word));
 
-                    Tweet created = new Tweet(tag, content);
+                    Tweet created = new Tweet(tag, content, 0);
                     createdTweets.add(created);
                     counter++;
                     perTweetCounter++;
