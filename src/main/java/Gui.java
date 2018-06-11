@@ -205,9 +205,9 @@ public class Gui {
 
                 consoleField.append(String.format("\n%s train tweets", trainTweets.size()));
                 consoleField.append(info.sentimentDistrubiton(trainTweets));
-                consoleField.append(String.format("\n%s test tweets", testTweets.size()));
+                consoleField.append(String.format("\n\n%s test tweets", testTweets.size()));
                 consoleField.append(info.sentimentDistrubiton(testTweets));
-                consoleField.append(String.format("\n%s translated tweets", translatedTweets.size()));
+                consoleField.append(String.format("\n\n%s translated tweets", translatedTweets.size()));
 //                consoleField.append(info.sentimentDistrubiton(translatedTweets));
 
                 consoleField.append("\n");
