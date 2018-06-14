@@ -335,8 +335,8 @@ public class Gui {
                 try {
                     String info = analyzer.analyzeTest(trainInstances, testInstances);
                     consoleField.append(String.format("\n%s\n",info));
-//                    info = analyzer.analyze(trainInstances, testInstances, testTweets, OUTPUT_FOLDER);
-//                    consoleField.append(String.format("\n%s\n",info));
+                    info = analyzer.analyze(trainInstances, testInstances, testTweets, OUTPUT_FOLDER);
+                    consoleField.append(String.format("\n%s\n",info));
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
