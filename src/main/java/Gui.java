@@ -276,7 +276,9 @@ public class Gui {
 
                 else {
 
-                    creator = new TranslationDataCreator(allInputTweets,
+                    creator = new TranslationDataCreator(
+                            Integer.parseInt(upperLimitArtificialField.getText()),
+                            allInputTweets,
                             translatedTweets.size(),
                             createdTweetsFile);
                 }

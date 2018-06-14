@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TranslationDataCreator implements DataCreator {
 
+    private int upperLimit;
     List<Tweet> allTweets;
     int size;
     private String outPath;
@@ -24,14 +25,17 @@ public class TranslationDataCreator implements DataCreator {
 
         List<Tweet> createdTweets = new ArrayList<>();
 
+        int counter = 0;
+
         for (Tweet trainTweet: trainTweets) {
 
             Tweet translatedTweet = allTweets.get(trainTweet.getOriginalSeq() + size);
 
-            if (!isSame(trainTweet, translatedTweet)) {
+            if (!isSame(trainTweet, translatedTweet) && (upperLimit == 0 || counter < upperLimit)) {
 
                 createdTweets.add(translatedTweet);
                 writer.write(trainTweet.getContent()+" || "+ translatedTweet.getContent()+"\n");
+                counter++;
             }
 
         }
