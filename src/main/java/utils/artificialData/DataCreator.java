@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface DataCreator {
 
-    public List<Tweet> create(List<Tweet> trainTweets) throws IOException;
+    List<Tweet> create(List<Tweet> trainTweets) throws IOException;
 }
